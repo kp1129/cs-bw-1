@@ -2,5 +2,56 @@
   border: 1px solid salmon;
   width: 80%;
   margin: 1rem auto;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 }
 
+h1 {
+  order: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 0.25rem 0;
+}
+
+h3 {
+  font-size: 1.25rem;
+  margin: 0.5rem 0;
+}
+
+p {
+  margin: 0.5rem 0;
+}
+
+ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.game-container {
+  order: 1;
+  width: 45%;
+  border: 1px solid aqua;
+  padding: 0.5rem;
+}
+
+.presets-container {
+  order: 2;
+  width: 20%;
+  border: 1px solid aquamarine;
+  padding: 0.5rem;
+}
+
+.rules-container {
+  order: 3;
+  width: 30%;
+  border: 1px solid darkolivegreen;
+  padding: 0.5rem;
+  line-height: 1.15rem;
+}
