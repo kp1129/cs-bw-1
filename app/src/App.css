@@ -55,3 +55,12 @@ ul {
   padding: 0.5rem;
   line-height: 1.15rem;
 }
+
+.about-container {
+  order: 4;
+  margin: 2.5% 0;
+  width: 100%;
+  padding: 0.5rem;
+  line-height: 1.15rem;
+  border: 1px solid orangered;
+}
