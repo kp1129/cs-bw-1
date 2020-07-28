@@ -1,6 +1,6 @@
 .app {
   border: 1px solid salmon;
-  width: 80%;
+  width: 90%;
   margin: 1rem auto;
   display: flex;
   flex-flow: row wrap;
@@ -63,4 +63,16 @@ ul {
   padding: 0.5rem;
   line-height: 1.15rem;
   border: 1px solid orangered;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(25, 1.75rem);
+}
+
+.cell {
+  /* background-color: brown; */
+  border: 1px solid black;
+  height: 1.75rem;
+  width: 1.75rem;
 }
