@@ -107,15 +107,10 @@ const GameContainer = () => {
         {grid.map((row, i) =>
           row.map((col, j) => (
             <div
-              className="cell"
+              className={grid[i][j] ? "cell alive" : "cell"}
               key={`${i}-${j}`}
                 // if simulation is running, onClick won't do anything
               onClick={start ? undefined : () => handleCellClick(i, j)}
-              style={{
-                // cell color will depend on whether it's alive or dead
-                // so it will be set dynamically
-                backgroundColor: grid[i][j] ? "darkolivegreen" : undefined,
-              }}
             />
           ))
         )}
