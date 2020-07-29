@@ -19,6 +19,7 @@ const GameContainer = () => {
 
   const [grid, setGrid] = useState(generateGrid());
   const [genCounter, setGenCounter] = useState(0);
+  const [resetFlag, setResetFlag] = useState(0)
 
   // this handler allows the user to toggle
   // individual cell state
@@ -30,6 +31,9 @@ const GameContainer = () => {
 
   const startRef = useRef(start);
   startRef.current = start;
+
+  const gridRef = useRef(grid);
+  gridRef.current = grid;
 
   const operations = [
       [0, 1],
@@ -49,7 +53,7 @@ const GameContainer = () => {
     // simulation logic
     
     // create copy of old grid
-    let newGrid = [...grid];
+    let newGrid = [...gridRef.current];
     // iterate over current grid to 
     // determine cell states for newGrid
     for(let i = 0; i < numRows; i++){
@@ -75,13 +79,9 @@ const GameContainer = () => {
     // newGrid is ready to display
     setGrid(newGrid);
 
-    setTimeout(() => {
-   
-        simulate();
-        
-    }, 1000);
+    setTimeout(simulate, 1000);
 
-  }, [])
+  }, [resetFlag])
 
   const handleStartButton = () => {
     setStart(!start);
@@ -124,7 +124,14 @@ const GameContainer = () => {
       <button onClick={handleStartButton} type="button">
         {start ? "pause" : "start"}
       </button>
-      <button type="button">clear the grid</button>
+      <button onClick={() => {
+          let incrementFlag = resetFlag + 1
+          setResetFlag(incrementFlag);
+          setStart(false);
+          startRef.current = false;
+          setGenCounter(0);
+          setGrid(generateGrid());
+      }} type="button">clear the grid</button>
     </div>
   );
 };
