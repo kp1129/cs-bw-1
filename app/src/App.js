@@ -1,25 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import components
 import GameContainer from './components/GameContainer';
 import PresetsContainer from './components/PresetsContainer';
 import RulesContainer from './components/RulesContainer';
-import AboutContainer from './components/AboutContainer';
+
 // import styles
 import './App.css';
 
-function App() {
+const App = () => {
+
+  const [speed, setSpeed] = useState(1000)
+
   return (
     <div className="app">
       
      <h1>Game of Life</h1>
      
-     <GameContainer />
+     <GameContainer speed={speed}/>
 
-     <PresetsContainer />
+     <PresetsContainer setSpeed={setSpeed} />
 
      <RulesContainer />
 
-     <AboutContainer />
     
     </div>
   );

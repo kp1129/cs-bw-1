@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 
-const GameContainer = () => {
+const GameContainer = ({speed}) => {
   // set the size of the grid
   const numRows = 25;
   const numCols = 25;
+
+  
 
   const generateGrid = () => {
     // initialize the grid
@@ -34,6 +36,9 @@ const GameContainer = () => {
 
   const gridRef = useRef(grid);
   gridRef.current = grid;
+
+  const speedRef = useRef(speed);
+  speedRef.current = speed;
 
   const operations = [
       [0, 1],
@@ -79,7 +84,7 @@ const GameContainer = () => {
     // newGrid is ready to display
     setGrid(newGrid);
 
-    setTimeout(simulate, 1000);
+    setTimeout(simulate, speedRef.current);
 
   }, [resetFlag])
 
