@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 
 const GameContainer = () => {
   // set the size of the grid
@@ -18,6 +18,7 @@ const GameContainer = () => {
   }
 
   const [grid, setGrid] = useState(generateGrid());
+  const [genCounter, setGenCounter] = useState(0);
 
   // this handler allows the user to toggle
   // individual cell state
@@ -46,6 +47,7 @@ const GameContainer = () => {
         return;
     } 
     // simulation logic
+    
     // create copy of old grid
     let newGrid = [...grid];
     // iterate over current grid to 
@@ -71,10 +73,13 @@ const GameContainer = () => {
     }
    
     // newGrid is ready to display
-    console.log('new grid', newGrid)
     setGrid(newGrid);
 
-    setTimeout(simulate, 1000);
+    setTimeout(() => {
+   
+        simulate();
+        
+    }, 1000);
 
   }, [])
 
@@ -86,9 +91,17 @@ const GameContainer = () => {
     }
   }
 
+  useEffect(() => {
+    if(startRef.current){
+        let newGenCounter = genCounter + 1;
+        setGenCounter(newGenCounter);
+    }
+    
+  }, [grid])
+
   return (
     <div className="game-container">
-      <h2>Generation: 0</h2>
+      <h2>Generation: {genCounter}</h2>
 
       <div className="grid-container">
         {grid.map((row, i) =>
