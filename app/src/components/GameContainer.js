@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useRef } from "react";
-import Cell from "./Cell";
 
 const GameContainer = () => {
   // set the size of the grid
   const numRows = 25;
   const numCols = 25;
 
-  const [grid, setGrid] = useState(() => {
+  const generateGrid = () => {
     // initialize the grid
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -16,12 +15,14 @@ const GameContainer = () => {
       rows.push(Array.from(Array(numCols), () => 0));
     }
     return rows;
-  });
+  }
+
+  const [grid, setGrid] = useState(generateGrid());
 
   // this handler allows the user to toggle
   // individual cell state
   const handleCellClick = (i, j) => {
-    setGrid([...grid], (grid[i][j] = !grid[i][j]));
+    setGrid([...grid], (grid[i][j] = grid[i][j] ? 0 : 1));
   };
 
   const [start, setStart] = useState(false);
@@ -29,13 +30,62 @@ const GameContainer = () => {
   const startRef = useRef(start);
   startRef.current = start;
 
+  const operations = [
+      [0, 1],
+      [0, -1],
+      [1, -1],
+      [-1, -1],
+      [1, 1],
+      [-1, 1],
+      [1, 0],
+      [-1, 0]
+    ];
+
   const simulate = useCallback(() => {
     if (!startRef.current){
         return;
+    } 
+    // simulation logic
+    // create copy of old grid
+    let newGrid = [...grid];
+    // iterate over current grid to 
+    // determine cell states for newGrid
+    for(let i = 0; i < numRows; i++){
+        for(let j = 0; j < numCols; j++){
+            let neighbors = 0;
+            operations.forEach(([x, y]) => {
+                const newI = i + x;
+                const newJ = j + y;
+                if(newI >= 0 && newI < numRows && newJ >= 0 && newJ < numCols){
+                    neighbors += grid[newI][newJ]
+                }
+            })
+
+            if (neighbors < 2 || neighbors > 3){
+                newGrid[i][j] = 0;
+            } else if (grid[i][j] === 0 && neighbors === 3){
+                newGrid[i][j] = 1;
+            }
+          
+        }
     }
+   
+    // newGrid is ready to display
+    console.log('new grid', newGrid)
+    setGrid(newGrid);
 
     setTimeout(simulate, 1000);
+
   }, [])
+
+  const handleStartButton = () => {
+    setStart(!start);
+    if(!start){
+        startRef.current = true;
+        simulate();
+    }
+  }
+
   return (
     <div className="game-container">
       <h2>Generation: 0</h2>
@@ -58,7 +108,7 @@ const GameContainer = () => {
         )}
       </div>
 
-      <button onClick={() => setStart(!start)} type="button">
+      <button onClick={handleStartButton} type="button">
         {start ? "pause" : "start"}
       </button>
       <button type="button">clear the grid</button>
