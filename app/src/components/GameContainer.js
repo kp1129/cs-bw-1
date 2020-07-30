@@ -4,12 +4,12 @@ const GameContainer = ({speed}) => {
   // set the size of the grid
   const numRows = 25;
   const numCols = 25;
-
-  
+  const [resetFlag, setResetFlag] = useState(0);
 
   const generateBlankGrid = () => {
     // initialize the grid
     const rows = [];
+    console.log(numRows);
     for (let i = 0; i < numRows; i++) {
       // create array of length = numCols
       // fill it with 0s because at this point
@@ -29,7 +29,7 @@ const GameContainer = ({speed}) => {
 
   const [grid, setGrid] = useState(generateBlankGrid());
   const [genCounter, setGenCounter] = useState(0);
-  const [resetFlag, setResetFlag] = useState(0)
+ 
 
   // this handler allows the user to toggle
   // individual cell state
@@ -38,6 +38,7 @@ const GameContainer = ({speed}) => {
   };
 
   const [start, setStart] = useState(false);
+  const [step, setStep] = useState(false);
 
   const startRef = useRef(start);
   startRef.current = start;
@@ -47,6 +48,9 @@ const GameContainer = ({speed}) => {
 
   const speedRef = useRef(speed);
   speedRef.current = speed;
+
+  const stepRef = useRef(step);
+  stepRef.current = step;  
 
   const operations = [
       [0, 1],
@@ -60,7 +64,7 @@ const GameContainer = ({speed}) => {
     ];
 
   const simulate = useCallback(() => {
-    if (!startRef.current){
+    if (!startRef.current && !stepRef.current){
         return;
     } 
     // simulation logic
@@ -92,7 +96,10 @@ const GameContainer = ({speed}) => {
     // newGrid is ready to display
     setGrid(newGrid);
 
-    setTimeout(simulate, speedRef.current);
+    if(startRef.current){
+      setTimeout(simulate, speedRef.current);
+    }
+    
 
   }, [resetFlag])
 
@@ -102,6 +109,16 @@ const GameContainer = ({speed}) => {
         startRef.current = true;
         simulate();
     }
+  }
+
+  const handleStepButton = () => {
+    setStep(true);
+    stepRef.current = true;
+    simulate();
+    setStep(false);
+    stepRef.current = false;
+    let newGenCounter = genCounter + 1;
+    setGenCounter(newGenCounter);
   }
 
   useEffect(() => {
@@ -116,7 +133,10 @@ const GameContainer = ({speed}) => {
     <div className="game-container">
       <h2>Generation: {genCounter}</h2>
 
-      <div className="grid-container">
+     <div style={{
+        display: "grid", 
+        gridTemplateColumns: `repeat(${numCols}, 1.5rem)`
+      }}>
         {grid.map((row, i) =>
           row.map((col, j) => (
             <div
@@ -129,6 +149,7 @@ const GameContainer = ({speed}) => {
         )}
       </div>
 
+      <button onClick={handleStepButton} type="button">step</button>        
       <button onClick={handleStartButton} type="button">
         {start ? "pause" : "start"}
       </button>
@@ -144,7 +165,7 @@ const GameContainer = ({speed}) => {
         let incrementFlag = resetFlag + 1;
         setResetFlag(incrementFlag);
         setGrid(generateRandomGrid());
-        }} type="button">random</button>
+        }} type="button">random</button>       
     </div>
   );
 };

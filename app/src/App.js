@@ -11,6 +11,8 @@ const App = () => {
 
   const [speed, setSpeed] = useState(1000)
 
+  
+
   return (
     <div className="app">
       
@@ -18,11 +20,16 @@ const App = () => {
      
      <GameContainer speed={speed}/>
 
-     <PresetsContainer setSpeed={setSpeed} />
+     <div className="right">
 
      <RulesContainer />
 
-    
+      <PresetsContainer setSpeed={setSpeed} />
+
+      
+
+     </div>
+
     </div>
   );
 }
