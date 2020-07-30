@@ -7,7 +7,7 @@ const GameContainer = ({speed}) => {
 
   
 
-  const generateGrid = () => {
+  const generateBlankGrid = () => {
     // initialize the grid
     const rows = [];
     for (let i = 0; i < numRows; i++) {
@@ -19,7 +19,15 @@ const GameContainer = ({speed}) => {
     return rows;
   }
 
-  const [grid, setGrid] = useState(generateGrid());
+  const generateRandomGrid = () => {
+    const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => Math.random() > .5 ? 1 : 0));
+    }
+    return rows;
+  }
+
+  const [grid, setGrid] = useState(generateBlankGrid());
   const [genCounter, setGenCounter] = useState(0);
   const [resetFlag, setResetFlag] = useState(0)
 
@@ -58,7 +66,7 @@ const GameContainer = ({speed}) => {
     // simulation logic
     
     // create copy of old grid
-    let newGrid = [...gridRef.current];
+    let newGrid = [...grid];
     // iterate over current grid to 
     // determine cell states for newGrid
     for(let i = 0; i < numRows; i++){
@@ -130,8 +138,13 @@ const GameContainer = ({speed}) => {
           setStart(false);
           startRef.current = false;
           setGenCounter(0);
-          setGrid(generateGrid());
-      }} type="button">clear the grid</button>
+          setGrid(generateBlankGrid());
+      }} type="button">reset</button>
+      <button onClick={() => {
+        let incrementFlag = resetFlag + 1;
+        setResetFlag(incrementFlag);
+        setGrid(generateRandomGrid());
+        }} type="button">random</button>
     </div>
   );
 };
